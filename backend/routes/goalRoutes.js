@@ -1,27 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const { getGoals } = require('../controllers/goalController')
-
-
-router.get('/', getGoals)
-
-router.get('/',(req,res)=>{
-res.status(200).json({message: 'Get Goals'})
-})
-
-router.post('/',(req,res)=>{
-    res.status(200).json({message: 'Set Goal'})
-})
-
-router.put('/:id',(req,res)=>{
-    res.status(200).json({message: `Update Goal ${req.params.id}`})
-})
-
-
-router.delete('/:id',(req,res)=>{
-res.status(200).json({message: `Delete Goal ${req.params.id}`})
-})
-
 const { 
     getGoals,
     setGoal,
@@ -31,6 +9,17 @@ const {
 
 router.route('/').get(getGoals).post(setGoal)
 router.route('/:id').put(updateGoal).delete(deleteGoal)
+    getGoals, 
+    setGoal, 
+    updateGoal, 
+    deleteGoal } = require('../controllers/goalController')
+
+
+const {protect} = require('../middleware/authMiddleware')
+
+router.route('/').get( protect, getGoals).post(protect, setGoal)
+router.route('/:id').delete(protect, deleteGoal).put(protect, updateGoal) 
+
 
 
 module.exports = router 
