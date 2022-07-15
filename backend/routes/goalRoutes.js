@@ -22,6 +22,15 @@ router.delete('/:id',(req,res)=>{
 res.status(200).json({message: `Delete Goal ${req.params.id}`})
 })
 
+const { 
+    getGoals,
+    setGoal,
+    updateGoal,
+    deleteGoal
+ } = require('../controllers/goalController')
+
+router.route('/').get(getGoals).post(setGoal)
+router.route('/:id').put(updateGoal).delete(deleteGoal)
 
 
-module.exports = router
+module.exports = router 
